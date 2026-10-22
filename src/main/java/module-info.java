@@ -1,7 +1,8 @@
-module com.mycompany.clubdejava {
+open module com.mycompany.clubdejava {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.almasb.fxgl.all;
+    requires javafx.media;
 
-    opens com.mycompany.clubdejava to javafx.fxml;
     exports com.mycompany.clubdejava;
 }
