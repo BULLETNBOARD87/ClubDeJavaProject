@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import javafx.geometry.Point2D;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -19,13 +20,13 @@ public class App extends GameApplication {
 
     public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
-    
+
     private static final double RADIUS = 20;
     private static final double POWER = 4.0;
 
     private BallComponent ballComponent;
     private boolean dragging = false;
-
+    private final GolfGameProperties properties = new GolfGameProperties();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -34,7 +35,19 @@ public class App extends GameApplication {
         settings.setTitle("Club De Java");
         settings.setIntroEnabled(false);
     }
-    
+
+    @Override
+    protected void initGame() {
+        ballComponent = new BallComponent(RADIUS);
+
+        entityBuilder()
+                .at(400 - RADIUS, 300 - RADIUS)
+                .zIndex(1)
+                .view(new Circle(RADIUS, RADIUS, RADIUS, Color.CORNFLOWERBLUE))
+                .with(ballComponent)
+                .buildAndAttach();
+    }
+
     @Override
     protected void initInput() {
         getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
@@ -48,17 +61,22 @@ public class App extends GameApplication {
 
             Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
             ballComponent.launch(drag.multiply(-POWER));
+            properties.recordLaunch();
         });
     }
 
     @Override
     protected void initUI() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("testing.fxml"));
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("easyPlaceholder.fxml"));
+            Parent root = loader.load();
             getGameScene().addUINode(root);
         } catch (Exception ex) {
             throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
         }
+
+        TextField launchField = (TextField) loader.getNamespace().get("launchField");
+        launchField.textProperty().bind(properties.launchesProperty().asString("Launches: %d"));
     }
 
     public static void main(String[] args) {

@@ -5,6 +5,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.TextField?>
+
 
 
 <Pane fx:id="overlay" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
@@ -16,6 +18,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdcc8d" height="627.0" layoutY="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="51.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdcc8d" height="627.0" layoutX="1049.0" layoutY="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="51.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdcc8d" height="257.0" layoutX="430.0" layoutY="212.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="670.0" />
+      <TextField fx:id="launchField" layoutX="20" layoutY="20" editable="false" focusTraversable="false"/>
       <Circle fill="#42e16c" layoutX="957.0" layoutY="128.0" radius="39.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
       <Circle fill="#f8f8f8" layoutX="965.0" layoutY="571.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
       <Circle layoutX="968.0" layoutY="135.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />

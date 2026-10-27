@@ -4,23 +4,30 @@
  */
 package com.mycompany.clubdejava;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  *
  * @author super
  */
 public class GolfGameProperties {
 
-    private int launches = 0;
+    private final IntegerProperty launches = new SimpleIntegerProperty(0);
 
     public void recordLaunch() {
-        launches++;
+        launches.set(launches.get() + 1);
     }
 
     public int getLaunches() {
+        return launches.get();
+    }
+
+    public IntegerProperty launchesProperty() {
         return launches;
     }
 
     public void reset() {
-        launches = 0;
+        launches.set(0);
     }
 }
