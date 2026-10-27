@@ -58,7 +58,7 @@ public class App extends GameApplication {
             dragging = false;
 
             Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
-            ballComponent.launch(drag.multiply(-POWER)); // opposite of the drag
+            ballComponent.launch(drag.multiply(-POWER));
         });
     }
 
