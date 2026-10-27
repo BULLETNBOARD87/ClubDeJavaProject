@@ -18,19 +18,19 @@
                <children>
                   <VBox alignment="CENTER" spacing="4.0">
                      <children>
-                        <Button fx:id="easyButton" prefHeight="55.0" prefWidth="170.0" text="Easy" styleClass="difficulty-button" id="easy-button" />
+                        <Button fx:id="easyButton" prefHeight="55.0" prefWidth="170.0" text="Easy" onAction="#onEasy" styleClass="difficulty-button" id="easy-button" />
                         <Label fx:id="easySelected" text="selected" styleClass="selected-label" visible="false" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="4.0">
                      <children>
-                        <Button fx:id="mediumButton" prefHeight="55.0" prefWidth="170.0" text="Medium" styleClass="difficulty-button" id="medium-button" />
+                        <Button fx:id="mediumButton" prefHeight="55.0" prefWidth="170.0" text="Medium" onAction="#onMedium" styleClass="difficulty-button" id="medium-button" />
                         <Label fx:id="mediumSelected" text="selected" styleClass="selected-label" visible="false" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="4.0">
                      <children>
-                        <Button fx:id="hardButton" prefHeight="55.0" prefWidth="170.0" text="Hard" styleClass="difficulty-button" id="hard-button" />
+                        <Button fx:id="hardButton" prefHeight="55.0" prefWidth="170.0" text="Hard" onAction="#onHard" styleClass="difficulty-button" id="hard-button" />
                         <Label fx:id="hardSelected" text="selected" styleClass="selected-label" visible="false" />
                      </children>
                   </VBox>
@@ -47,7 +47,7 @@
                </children>
             </HBox>
             <Label fx:id="playersHint" text="(Choose 1 to 4 players)" styleClass="hint" />
-            <Button fx:id="startButton" prefHeight="60.0" prefWidth="220.0" text="START GAME" styleClass="start-button" />
+            <Button fx:id="startButton" prefHeight="60.0" prefWidth="220.0" text="START GAME" onAction="#onStart" styleClass="start-button" />
             <Label text="How to play: click your ball, drag backwards to aim, release to shoot. Fewest shots wins!" styleClass="hint" />
          </children>
       </VBox>
