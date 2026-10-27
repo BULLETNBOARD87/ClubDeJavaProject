@@ -14,7 +14,7 @@ public class App extends GameApplication {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(WIDTH);
