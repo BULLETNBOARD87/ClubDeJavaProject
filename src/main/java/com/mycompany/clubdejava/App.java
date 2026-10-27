@@ -54,10 +54,10 @@ public class App extends GameApplication {
     @Override
     protected void initUI() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("testing.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("easyPlaceholder.fxml"));
             getGameScene().addUINode(root);
         } catch (Exception ex) {
-            throw new RuntimeException("Could not load testing.fxml", ex);
+            throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
         }
     }
 
