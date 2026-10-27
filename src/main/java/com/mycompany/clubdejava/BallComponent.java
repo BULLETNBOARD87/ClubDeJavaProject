@@ -28,4 +28,9 @@ public class BallComponent extends Component {
         return entity.getPosition().add(radius, radius);
     }
     
+    @Override
+    public void onUpdate(double tpf) {
+        entity.translate(velocity.multiply(tpf));
+    }
+    
 }
