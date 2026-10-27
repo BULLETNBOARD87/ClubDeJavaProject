@@ -8,3 +8,33 @@
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
+
+.section-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.difficulty-button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+#easy-button {
+    -fx-background-color: #4caf50;
+}
+
+#medium-button {
+    -fx-background-color: #f9a825;
+}
+
+#hard-button {
+    -fx-background-color: #c62828;
+}
