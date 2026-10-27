@@ -69,3 +69,22 @@
 #hard-button {
     -fx-background-color: #c62828;
 }
+
+
+
+
+.selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
+
+.dimmed {
+    -fx-opacity: 0.6;
+}
+
+.selected-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+    -fx-text-fill: white;
+}
