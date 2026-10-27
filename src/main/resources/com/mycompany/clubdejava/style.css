@@ -27,6 +27,25 @@
     -fx-border-width: 2;
 }
 
+.player-button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #1565c0;
+    -fx-background-radius: 33;
+    -fx-border-radius: 33;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.hint {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+}
+
+
 #easy-button {
     -fx-background-color: #4caf50;
 }
