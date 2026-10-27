@@ -15,6 +15,12 @@ public class App extends GameApplication {
 
     public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
+    
+    private static final double RADIUS = 20;
+    private static final double POWER = 4.0;
+
+    private BallComponent ballComponent;
+    private boolean dragging = false;
 
 
     @Override
