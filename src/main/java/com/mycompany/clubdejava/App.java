@@ -43,4 +43,9 @@ public class App extends GameApplication {
             throw new RuntimeException("Could not load title.fxml", e);
         }
     }
+    
+  
+    public static void startGame() {
+        getGameScene().removeUINode(titleScreen);
+    }
 }

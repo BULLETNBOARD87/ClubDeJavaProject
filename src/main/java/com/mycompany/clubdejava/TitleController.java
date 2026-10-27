@@ -34,4 +34,25 @@ public class TitleController {
 
     @FXML
     private Button startButton;
+    
+    
+    @FXML
+    private void onEasy() {
+        GameSetup.setDifficulty(Difficulty.EASY);
+    }
+
+    @FXML
+    private void onMedium() {
+        GameSetup.setDifficulty(Difficulty.MEDIUM);
+    }
+
+    @FXML
+    private void onHard() {
+        GameSetup.setDifficulty(Difficulty.HARD);
+    }
+    
+    @FXML
+    private void onStart() {
+        App.startGame();
+    }
 }
