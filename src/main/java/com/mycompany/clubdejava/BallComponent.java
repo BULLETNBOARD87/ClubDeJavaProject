@@ -16,6 +16,9 @@ public class BallComponent extends Component {
     private final double radius;
     private Point2D velocity = Point2D.ZERO;
     
+    private static final double FRICTION = 0.7;  
+    private static final double STOP_SPEED = 5.0;
+    
     public BallComponent(double radius) {
         this.radius = radius;
     }
@@ -24,13 +27,20 @@ public class BallComponent extends Component {
         this.velocity = velocity;
     }
 
-    public Point2D getCenter() {
+    public Point2D getCenter() {        
         return entity.getPosition().add(radius, radius);
     }
     
     @Override
     public void onUpdate(double tpf) {
+        if (velocity.magnitude() < STOP_SPEED) {
+            velocity = Point2D.ZERO;
+            return;
+        }
+        
         entity.translate(velocity.multiply(tpf));
+        
+        velocity = velocity.multiply(Math.max(0, 1 - FRICTION * tpf));
     }
     
 }

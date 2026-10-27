@@ -36,17 +36,6 @@ public class App extends GameApplication {
     }
     
     @Override
-    protected void initGame() {
-        ballComponent = new BallComponent(RADIUS);
-
-        entityBuilder()
-                .at(400 - RADIUS, 300 - RADIUS)
-                .view(new Circle(RADIUS, RADIUS, RADIUS, Color.CORNFLOWERBLUE))
-                .with(ballComponent)
-                .buildAndAttach();
-    }
-    
-    @Override
     protected void initInput() {
         getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
             Point2D mouse = getInput().getMousePositionWorld();
