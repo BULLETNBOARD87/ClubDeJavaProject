@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class App extends GameApplication {
 
@@ -29,6 +31,17 @@ public class App extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Club De Java");
         settings.setIntroEnabled(false);
+    }
+    
+    @Override
+    protected void initGame() {
+        ballComponent = new BallComponent(RADIUS);
+
+        entityBuilder()
+                .at(400 - RADIUS, 300 - RADIUS)
+                .view(new Circle(RADIUS, RADIUS, RADIUS, Color.CORNFLOWERBLUE))
+                .with(ballComponent)
+                .buildAndAttach();
     }
 
     @Override
