@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -42,6 +44,22 @@ public class App extends GameApplication {
                 .view(new Circle(RADIUS, RADIUS, RADIUS, Color.CORNFLOWERBLUE))
                 .with(ballComponent)
                 .buildAndAttach();
+    }
+    
+    @Override
+    protected void initInput() {
+        getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            Point2D mouse = getInput().getMousePositionWorld();
+            dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
+        });
+
+        getInput().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            if (!dragging) return;
+            dragging = false;
+
+            Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
+            ballComponent.launch(drag.multiply(-POWER)); // opposite of the drag
+        });
     }
 
     @Override
