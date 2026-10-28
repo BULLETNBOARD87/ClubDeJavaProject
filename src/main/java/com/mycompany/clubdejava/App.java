@@ -71,8 +71,11 @@ public class App extends GameApplication {
         spawnWall(0, 36, 51, 627);
         spawnWall(1049, 36, 51, 627);
         
-        
+    
         spawnWall(430, 212, 670, 257);
+        
+        
+        spawn("goal", 948, 115);
     }
     
     

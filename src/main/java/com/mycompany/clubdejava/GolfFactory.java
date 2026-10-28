@@ -4,10 +4,13 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -47,6 +50,26 @@ public class GolfFactory implements EntityFactory {
                 .type(EntityType.WALL)
                 .view(wall)
                 .bbox(new HitBox(BoundingShape.box(width, height)))
+                .collidable()
+                .build();
+    }
+    
+     
+    @Spawns("goal")
+    public Entity newGoal(SpawnData data) {
+        Circle hole = new Circle(20, 20, 20, Color.BLACK);
+
+        // flag pole going up from the hole, with a red flag at the top
+        Line pole = new Line(20, 20, 20, -40);
+        pole.setStroke(Color.DIMGRAY);
+        pole.setStrokeWidth(3);
+        Polygon flag = new Polygon(20, -40, 55, -30, 20, -20);
+        flag.setFill(Color.RED);
+
+        return entityBuilder(data)
+                .type(EntityType.GOAL)
+                .view(new Group(hole, pole, flag))
+                .bbox(new HitBox(BoundingShape.circle(20)))
                 .collidable()
                 .build();
     }
