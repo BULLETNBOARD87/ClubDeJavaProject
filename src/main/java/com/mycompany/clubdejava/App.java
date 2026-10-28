@@ -2,6 +2,8 @@ package com.mycompany.clubdejava;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.entity.SpawnData;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import java.io.IOException;
@@ -63,5 +65,23 @@ public class App extends GameApplication {
      */
     private static void buildCourse() {
         spawn("floor");
+       
+        spawnWall(0, 0, 1100, 40);
+        spawnWall(0, 660, 1100, 40);
+        spawnWall(0, 36, 51, 627);
+        spawnWall(1049, 36, 51, 627);
+        
+        
+        spawnWall(430, 212, 670, 257);
+    }
+    
+    
+    /**
+     * Will spawns a wall at the given x,y coordinate and also with the giben size.
+     */
+    private static void spawnWall(double x, double y, double width, double height) {
+        spawn("wall", new SpawnData(x, y)
+                .put("width", width)
+                .put("height", height));
     }
 }
