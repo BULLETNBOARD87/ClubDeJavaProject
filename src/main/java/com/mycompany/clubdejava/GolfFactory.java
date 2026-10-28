@@ -18,6 +18,14 @@ import com.almasb.fxgl.physics.HitBox;
 
 
 public class GolfFactory implements EntityFactory {
+    
+        // KEEPING NOTES FOR WHAT COLOR IS WHAT: 
+        public static final Color[] PLAYER_COLORS = {
+        Color.web("#e53935"), // RED
+        Color.web("#1e88e5"), // BLUE
+        Color.web("#fdd835"), // YELLOW
+        Color.web("#8e24aa") // PURPLE
+    };
 
     
     @Spawns("floor")
@@ -69,6 +77,22 @@ public class GolfFactory implements EntityFactory {
         return entityBuilder(data)
                 .type(EntityType.GOAL)
                 .view(new Group(hole, pole, flag))
+                .bbox(new HitBox(BoundingShape.circle(20)))
+                .collidable()
+                .build();
+    }
+    
+        @Spawns("ball")
+    public Entity newBall(SpawnData data) {
+        Color color = data.get("color");
+
+        Circle ball = new Circle(20, 20, 20, color);
+        ball.setStroke(Color.BLACK);
+        ball.setStrokeWidth(2);
+
+        return entityBuilder(data)
+                .type(EntityType.BALL)
+                .view(ball)
                 .bbox(new HitBox(BoundingShape.circle(20)))
                 .collidable()
                 .build();

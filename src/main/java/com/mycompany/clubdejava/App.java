@@ -58,6 +58,7 @@ public class App extends GameApplication {
         public static void startGame() {
         getGameScene().removeUINode(titleScreen);
         buildCourse();
+        spawnBalls();
     }
 
     /**
@@ -76,6 +77,18 @@ public class App extends GameApplication {
         
         
         spawn("goal", 948, 115);
+    }
+    
+        private static void spawnBalls() {
+        int players = GameSetup.getPlayerCount();
+        if (players == 0) {
+            players = 1;
+        }
+
+        for (int i = 0; i < players; i++) {
+            // the balls center here is at 965 and 530 exactly like in the map
+            spawn("ball", new SpawnData(945, 510).put("color", GolfFactory.PLAYER_COLORS[i]));
+        }
     }
     
     
