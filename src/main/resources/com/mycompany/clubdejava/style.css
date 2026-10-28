@@ -1,0 +1,90 @@
+.title-root {
+    -fx-background-color: #2e7d32;
+}
+
+.game-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 72px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.section-title {
+    -fx-font-family: "Arial";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.difficulty-button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.player-button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #1565c0;
+    -fx-background-radius: 33;
+    -fx-border-radius: 33;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.hint {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+}
+
+.start-button {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3a2c00;
+    -fx-background-color: #ffc107;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+
+#easy-button {
+    -fx-background-color: #4caf50;
+}
+
+#medium-button {
+    -fx-background-color: #f9a825;
+}
+
+#hard-button {
+    -fx-background-color: #c62828;
+}
+
+
+
+
+.selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
+
+.dimmed {
+    -fx-opacity: 0.6;
+}
+
+.selected-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+    -fx-text-fill: white;
+}
