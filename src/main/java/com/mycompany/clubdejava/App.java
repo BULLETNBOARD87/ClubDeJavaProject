@@ -5,7 +5,10 @@ import com.almasb.fxgl.app.GameSettings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import java.io.IOException;
+
 import static com.almasb.fxgl.dsl.FXGL.getGameScene;
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /**
  * Club De Java: a turn-based, top-down golf game.
@@ -30,7 +33,12 @@ public class App extends GameApplication {
         settings.setIntroEnabled(false);
     }
     
-    
+        @Override
+    protected void initGame() {
+        // GolfFactory creates the entities when we call spawn("name")
+        getGameWorld().addEntityFactory(new GolfFactory());
+    }
+
     
     @Override
     protected void initUI() {
@@ -45,7 +53,15 @@ public class App extends GameApplication {
     }
     
   
-    public static void startGame() {
+        public static void startGame() {
         getGameScene().removeUINode(titleScreen);
+        buildCourse();
+    }
+
+    /**
+     * Builds the Easy course.
+     */
+    private static void buildCourse() {
+        spawn("floor");
     }
 }
