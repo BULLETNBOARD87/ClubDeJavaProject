@@ -4,6 +4,7 @@ package com.mycompany.clubdejava;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
 
 public class TitleController {
 
@@ -49,6 +50,12 @@ public class TitleController {
     @FXML
     private void onHard() {
         GameSetup.setDifficulty(Difficulty.HARD);
+    }
+    
+        @FXML
+    private void onPlayers(ActionEvent event) {
+        Button clicked = (Button) event.getSource();
+        GameSetup.setPlayerCount(Integer.parseInt(clicked.getText()));
     }
     
     @FXML
