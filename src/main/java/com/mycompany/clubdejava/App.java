@@ -25,7 +25,7 @@ public class App extends GameApplication {
     public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
 
-    private static final double RADIUS = 20;
+    private static double RADIUS;
     private static final double POWER = 4.0;
     
     private Parent fxmlRoot;
@@ -75,12 +75,38 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
+        loadFxml();
+
+        Circle ball = (Circle) fxmlNamespace.get("ball");
+        RADIUS = ball.getRadius();
+
+        double centerX = ball.getLayoutX() + ball.getCenterX() + ball.getTranslateX();
+        double centerY = ball.getLayoutY() + ball.getCenterY() + ball.getTranslateY();
+
+        detachFromParent(ball);
+        
+        fxmlRoot.setMouseTransparent(true);
+        entityBuilder()
+            .zIndex(0)
+            .view(fxmlRoot)
+            .buildAndAttach();
+        
+        TextField launchField = (TextField) fxmlNamespace.get("launchField");
+        detachFromParent(launchField);
+
+        ball.setLayoutX(0);
+        ball.setLayoutY(0);
+        ball.setTranslateX(0);
+        ball.setTranslateY(0);
+        ball.setCenterX(RADIUS);
+        ball.setCenterY(RADIUS);
+
         ballComponent = new BallComponent(RADIUS);
 
         entityBuilder()
-                .at(400 - RADIUS, 300 - RADIUS)
+                .at(centerX - RADIUS, centerY - RADIUS)
                 .zIndex(1)
-                .view(new Circle(RADIUS, RADIUS, RADIUS, Color.CORNFLOWERBLUE))
+                .view(ball)
                 .with(ballComponent)
                 .buildAndAttach();
     }
@@ -103,9 +129,7 @@ public class App extends GameApplication {
     }
 
     @Override
-    protected void initUI() {
-        loadFxml();
-        
+    protected void initUI() {        
         TextField launchField = (TextField) fxmlNamespace.get("launchField");
         launchField.textProperty().bind(properties.launchesProperty().asString("Launches: %d"));
         getGameScene().addUINode(launchField);
