@@ -11,6 +11,7 @@ import java.io.IOException;
 import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 
 /**
  * Club De Java: a turn-based, top-down golf game.
@@ -40,8 +41,13 @@ public class App extends GameApplication {
         // GolfFactory creates the entities when we call spawn("name")
         getGameWorld().addEntityFactory(new GolfFactory());
     }
-
     
+        @Override
+    protected void initPhysics() {
+        // the game is seen from the top so we shouldnt need any gravity
+        getPhysicsWorld().setGravity(0, 0);
+    }
+
     @Override
     protected void initUI() {
         try {
@@ -79,7 +85,7 @@ public class App extends GameApplication {
         spawn("goal", 948, 115);
     }
     
-        private static void spawnBalls() {
+    private static void spawnBalls() {
         int players = GameSetup.getPlayerCount();
         if (players == 0) {
             players = 1;

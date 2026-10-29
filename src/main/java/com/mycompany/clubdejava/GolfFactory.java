@@ -15,6 +15,9 @@ import javafx.scene.shape.Polygon;
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 
 
 public class GolfFactory implements EntityFactory {
@@ -53,11 +56,16 @@ public class GolfFactory implements EntityFactory {
         double height = data.get("height");
 
         Rectangle wall = new Rectangle(width, height, Color.web("#fdcc8d"));
+        
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+        physics.setFixtureDef(new FixtureDef().friction(0f).restitution(0.7f));
 
         return entityBuilder(data)
                 .type(EntityType.WALL)
                 .view(wall)
                 .bbox(new HitBox(BoundingShape.box(width, height)))
+                .with(physics)
                 .collidable()
                 .build();
     }
