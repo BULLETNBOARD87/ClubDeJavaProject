@@ -12,8 +12,11 @@ import javafx.scene.Parent;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import java.util.Map;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -50,6 +53,23 @@ public class App extends GameApplication {
             fxmlNamespace = loader.getNamespace();
         } catch (Exception ex) {
             throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
+        }
+    }
+    
+    /**
+     * Detaches a specified node from the parent.
+     * The parent must either be a Pane or a Group.
+     * @param node the node to detach.
+     */
+    private void detachFromParent(Node node) {
+        Parent parent = node.getParent();
+        if (parent instanceof Pane) {
+            ((Pane) parent).getChildren().remove(node);
+        } else if (parent instanceof Group) {
+            ((Group) parent).getChildren().remove(node);
+        } else {
+            throw new IllegalStateException(
+                    "Unsupported parent for ball: " + (parent == null ? "null" : parent.getClass()));
         }
     }
 
