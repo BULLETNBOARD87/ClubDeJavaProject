@@ -5,6 +5,7 @@
 package com.mycompany.clubdejava;
 
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 
 /**
@@ -12,35 +13,37 @@ import javafx.geometry.Point2D;
  * @author super
  */
 public class BallComponent extends Component {
-    
+
     private final double radius;
-    private Point2D velocity = Point2D.ZERO;
-    
-    private static final double FRICTION = 0.7;  
+    private PhysicsComponent physics;  
+
+    private static final float DAMPING = 1.5f;   
     private static final double STOP_SPEED = 5.0;
-    
+
     public BallComponent(double radius) {
         this.radius = radius;
     }
 
-    public void launch(Point2D velocity) {
-        this.velocity = velocity;
+    @Override
+    public void onAdded() {
+        physics.setOnPhysicsInitialized(() -> {
+            physics.getBody().setLinearDamping(DAMPING);
+            physics.getBody().setAngularDamping(2.0f);
+        });
     }
 
-    public Point2D getCenter() {        
+    public void launch(Point2D velocity) {
+        physics.setLinearVelocity(velocity);
+    }
+
+    public Point2D getCenter() {
         return entity.getPosition().add(radius, radius);
     }
-    
+
     @Override
     public void onUpdate(double tpf) {
-        if (velocity.magnitude() < STOP_SPEED) {
-            velocity = Point2D.ZERO;
-            return;
+        if (physics.isMoving() && physics.getLinearVelocity().magnitude() < STOP_SPEED) {
+            physics.setLinearVelocity(Point2D.ZERO);
         }
-        
-        entity.translate(velocity.multiply(tpf));
-        
-        velocity = velocity.multiply(Math.max(0, 1 - FRICTION * tpf));
     }
-    
 }
