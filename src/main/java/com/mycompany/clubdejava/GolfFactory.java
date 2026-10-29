@@ -19,6 +19,8 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 
+import com.almasb.fxgl.entity.components.CollidableComponent;
+
 
 public class GolfFactory implements EntityFactory {
     
@@ -106,15 +108,20 @@ public class GolfFactory implements EntityFactory {
         physics.setFixtureDef(new FixtureDef()
                 .density(1.0f)
                 .friction(0f)
-                .restitution(0.7f));   // match the walls' bounciness
+                .restitution(0.7f));
 
-        return entityBuilder(data)
+        Entity entity = entityBuilder(data)
                 .type(EntityType.BALL)
                 .view(ball)
-                .bbox(new HitBox(BoundingShape.circle(20)))
+                .bbox(new HitBox(BoundingShape.circle(BALL_RADIUS)))
                 .with(physics)
-                .with(new BallComponent(BALL_RADIUS)) 
+                .with(new BallComponent(BALL_RADIUS))
                 .collidable()
                 .build();
+
+        
+        entity.getComponent(CollidableComponent.class).addIgnoredType(EntityType.BALL);
+
+        return entity;
     }
 }

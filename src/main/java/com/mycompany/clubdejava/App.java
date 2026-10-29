@@ -1,24 +1,10 @@
-/**
- * JavaFX App
- */
 package com.mycompany.clubdejava;
 
 
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.GameSettings;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import java.util.Map;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -39,7 +25,7 @@ import com.almasb.fxgl.entity.Entity;
  */
 public class App extends GameApplication {
   
-public static final int WIDTH = 1100;
+    public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
     
     private static final double RADIUS = 20;
@@ -79,6 +65,10 @@ public static final int WIDTH = 1100;
     @Override
     protected void initInput() {
         getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            // NO BALL YET WHILE TITLE SCREEN IS SHOWN IF NOT IT INSTANTLY CRASHES WHEN U CLICK SOMEWHERE
+            if (ballComponent == null) {
+                return;
+            }
             Point2D mouse = getInput().getMousePositionWorld();
             dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
         });
