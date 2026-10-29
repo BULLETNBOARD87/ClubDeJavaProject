@@ -18,11 +18,11 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 
 
 public class GolfFactory implements EntityFactory {
+    
+    public static final double BALL_RADIUS = 10;
     
         // KEEPING NOTES FOR WHAT COLOR IS WHAT: 
         public static final Color[] PLAYER_COLORS = {
@@ -92,33 +92,29 @@ public class GolfFactory implements EntityFactory {
                 .build();
     }
     
+
     @Spawns("ball")
     public Entity newBall(SpawnData data) {
         Color color = data.get("color");
 
-        Circle ball = new Circle(20, 20, 20, color);
+        Circle ball = new Circle(BALL_RADIUS, BALL_RADIUS, BALL_RADIUS, color);
         ball.setStroke(Color.BLACK);
         ball.setStrokeWidth(2);
 
-        BodyDef body = new BodyDef();
-        body.setType(BodyType.DYNAMIC);
-        body.setBullet(true);
-        body.setFixedRotation(true);
-
         PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyDef(body);
-        physics.setFixtureDef(new FixtureDef().density(1f).friction(0f).restitution(0.7f));
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef()
+                .density(1.0f)
+                .friction(0f)
+                .restitution(0.7f));   // match the walls' bounciness
 
-        Entity entity = entityBuilder(data)
+        return entityBuilder(data)
                 .type(EntityType.BALL)
                 .view(ball)
                 .bbox(new HitBox(BoundingShape.circle(20)))
                 .with(physics)
+                .with(new BallComponent(BALL_RADIUS)) 
                 .collidable()
                 .build();
-
-        entity.getComponent(CollidableComponent.class).addIgnoredType(EntityType.BALL); // ALL BALLS START AT SAME SPOT SO MUST NOT COLLIDE W EACH OTHER
-
-        return entity;
     }
 }
