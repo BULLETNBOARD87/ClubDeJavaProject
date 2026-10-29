@@ -1,6 +1,3 @@
-/**
- * JavaFX App
- */
 package com.mycompany.clubdejava;
 
 
@@ -39,7 +36,7 @@ import com.almasb.fxgl.entity.Entity;
  */
 public class App extends GameApplication {
   
-public static final int WIDTH = 1100;
+    public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
     
     private static final double RADIUS = 20;
@@ -79,6 +76,10 @@ public static final int WIDTH = 1100;
     @Override
     protected void initInput() {
         getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            // NO BALL YET WHILE TITLE SCREEN IS SHOWN IF NOT IT INSTANTLY CRASHES WHEN U CLICK SOMEWHERE
+            if (ballComponent == null) {
+                return;
+            }
             Point2D mouse = getInput().getMousePositionWorld();
             dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
         });
