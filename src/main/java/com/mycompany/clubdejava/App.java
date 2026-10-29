@@ -32,6 +32,7 @@ import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
+import com.almasb.fxgl.entity.Entity;
 
 /**
  * Club De Java: a turn-based, top-down golf game.
