@@ -18,6 +18,8 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 
 
 public class GolfFactory implements EntityFactory {
@@ -90,7 +92,7 @@ public class GolfFactory implements EntityFactory {
                 .build();
     }
     
-        @Spawns("ball")
+    @Spawns("ball")
     public Entity newBall(SpawnData data) {
         Color color = data.get("color");
 
@@ -98,11 +100,25 @@ public class GolfFactory implements EntityFactory {
         ball.setStroke(Color.BLACK);
         ball.setStrokeWidth(2);
 
-        return entityBuilder(data)
+        BodyDef body = new BodyDef();
+        body.setType(BodyType.DYNAMIC);
+        body.setBullet(true);
+        body.setFixedRotation(true);
+
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyDef(body);
+        physics.setFixtureDef(new FixtureDef().density(1f).friction(0f).restitution(0.7f));
+
+        Entity entity = entityBuilder(data)
                 .type(EntityType.BALL)
                 .view(ball)
                 .bbox(new HitBox(BoundingShape.circle(20)))
+                .with(physics)
                 .collidable()
                 .build();
+
+        entity.getComponent(CollidableComponent.class).addIgnoredType(EntityType.BALL); // ALL BALLS START AT SAME SPOT SO MUST NOT COLLIDE W EACH OTHER
+
+        return entity;
     }
 }
