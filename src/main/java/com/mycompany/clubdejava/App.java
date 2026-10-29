@@ -84,16 +84,11 @@ public class App extends GameApplication {
 
     @Override
     protected void initUI() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("testing.fxml"));
-        try {
-            Parent root = loader.load();
-            getGameScene().addUINode(root);
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
-        }
-
-        TextField launchField = (TextField) loader.getNamespace().get("launchField");
+        loadFxml();
+        
+        TextField launchField = (TextField) fxmlNamespace.get("launchField");
         launchField.textProperty().bind(properties.launchesProperty().asString("Launches: %d"));
+        getGameScene().addUINode(launchField);
     }
 
     public static void main(String[] args) {
