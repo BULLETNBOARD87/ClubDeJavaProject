@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,9 @@ public class App extends GameApplication {
 
     private static final double RADIUS = 20;
     private static final double POWER = 4.0;
+    
+    private Parent fxmlRoot;
+    private Map<String, Object> fxmlNamespace;
 
     private BallComponent ballComponent;
     private boolean dragging = false;
@@ -34,6 +38,19 @@ public class App extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Club De Java");
         settings.setIntroEnabled(false);
+    }
+    
+    /**
+     * Loads the provided FXML file.
+     */
+    private void loadFxml() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("easyPlaceholder.fxml"));
+            fxmlRoot = loader.load();
+            fxmlNamespace = loader.getNamespace();
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
+        }
     }
 
     @Override
