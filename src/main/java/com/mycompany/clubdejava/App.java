@@ -1,4 +1,24 @@
+/**
+ * JavaFX App
+ */
 package com.mycompany.clubdejava;
+
+
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import java.util.Map;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -17,9 +37,16 @@ import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
  * Club De Java: a turn-based, top-down golf game.
  */
 public class App extends GameApplication {
-
-    public static final int WIDTH = 1100;
+  
+public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
+    
+    private static final double RADIUS = 20;
+    private static final double POWER = 4.0;
+
+    private static BallComponent ballComponent;
+    private boolean dragging = false;
+    private final GolfGameProperties properties = new GolfGameProperties();
     
  
     private static Parent titleScreen;
@@ -48,6 +75,23 @@ public class App extends GameApplication {
         getPhysicsWorld().setGravity(0, 0);
     }
 
+    @Override
+    protected void initInput() {
+        getInput().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            Point2D mouse = getInput().getMousePositionWorld();
+            dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
+        });
+
+        getInput().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            if (!dragging) return;
+            dragging = false;
+
+            Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
+            ballComponent.launch(drag.multiply(-POWER));
+            properties.recordLaunch();
+        });
+    }
+    
     @Override
     protected void initUI() {
         try {
@@ -86,16 +130,20 @@ public class App extends GameApplication {
     }
     
     private static void spawnBalls() {
-        int players = GameSetup.getPlayerCount();
-        if (players == 0) {
-            players = 1;
-        }
+    int players = GameSetup.getPlayerCount();
+    if (players == 0) {
+        players = 1;
+    }
 
-        for (int i = 0; i < players; i++) {
-            // the balls center here is at 965 and 530 exactly like in the map
-            spawn("ball", new SpawnData(945, 510).put("color", GolfFactory.PLAYER_COLORS[i]));
+    for (int i = 0; i < players; i++) {
+        Entity ball = spawn("ball", new SpawnData(955, 520).put("color", GolfFactory.PLAYER_COLORS[i]));
+
+        // for now, control the first player's ball
+        if (i == 0) {
+            ballComponent = ball.getComponent(BallComponent.class);
         }
     }
+}
     
     
     /**
