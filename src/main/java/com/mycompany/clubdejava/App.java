@@ -20,21 +20,41 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.entity.SpawnData;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import java.io.IOException;
+
+import static com.almasb.fxgl.dsl.FXGL.getGameScene;
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
+
+/**
+ * Club De Java: a turn-based, top-down golf game.
+ */
 public class App extends GameApplication {
-
-    public static final int WIDTH = 1100;
+  
+public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
-
-    private static double RADIUS;
-    private static final double POWER = 4.0;
     
-    private Parent fxmlRoot;
-    private Map<String, Object> fxmlNamespace;
+    private static final double RADIUS = 20;
+    private static final double POWER = 4.0;
 
-    private BallComponent ballComponent;
+    private static BallComponent ballComponent;
     private boolean dragging = false;
     private final GolfGameProperties properties = new GolfGameProperties();
+    
+ 
+    private static Parent titleScreen;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(WIDTH);
@@ -43,72 +63,16 @@ public class App extends GameApplication {
         settings.setIntroEnabled(false);
     }
     
-    /**
-     * Loads the provided FXML file.
-     */
-    private void loadFxml() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("easyPlaceholder.fxml"));
-            fxmlRoot = loader.load();
-            fxmlNamespace = loader.getNamespace();
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not load easyPlaceholder.fxml", ex);
-        }
+        @Override
+    protected void initGame() {
+        // GolfFactory creates the entities when we call spawn("name")
+        getGameWorld().addEntityFactory(new GolfFactory());
     }
     
-    /**
-     * Detaches a specified node from the parent.
-     * The parent must either be a Pane or a Group.
-     * @param node the node to detach.
-     */
-    private void detachFromParent(Node node) {
-        Parent parent = node.getParent();
-        if (parent instanceof Pane) {
-            ((Pane) parent).getChildren().remove(node);
-        } else if (parent instanceof Group) {
-            ((Group) parent).getChildren().remove(node);
-        } else {
-            throw new IllegalStateException(
-                    "Unsupported parent for ball: " + (parent == null ? "null" : parent.getClass()));
-        }
-    }
-
-    @Override
-    protected void initGame() {
-        loadFxml();
-
-        Circle ball = (Circle) fxmlNamespace.get("ball");
-        RADIUS = ball.getRadius();
-
-        double centerX = ball.getLayoutX() + ball.getCenterX() + ball.getTranslateX();
-        double centerY = ball.getLayoutY() + ball.getCenterY() + ball.getTranslateY();
-
-        detachFromParent(ball);
-        
-        fxmlRoot.setMouseTransparent(true);
-        entityBuilder()
-            .zIndex(0)
-            .view(fxmlRoot)
-            .buildAndAttach();
-        
-        TextField launchField = (TextField) fxmlNamespace.get("launchField");
-        detachFromParent(launchField);
-
-        ball.setLayoutX(0);
-        ball.setLayoutY(0);
-        ball.setTranslateX(0);
-        ball.setTranslateY(0);
-        ball.setCenterX(RADIUS);
-        ball.setCenterY(RADIUS);
-
-        ballComponent = new BallComponent(RADIUS);
-
-        entityBuilder()
-                .at(centerX - RADIUS, centerY - RADIUS)
-                .zIndex(1)
-                .view(ball)
-                .with(ballComponent)
-                .buildAndAttach();
+        @Override
+    protected void initPhysics() {
+        // the game is seen from the top so we shouldnt need any gravity
+        getPhysicsWorld().setGravity(0, 0);
     }
 
     @Override
@@ -127,15 +91,67 @@ public class App extends GameApplication {
             properties.recordLaunch();
         });
     }
-
+    
     @Override
-    protected void initUI() {        
-        TextField launchField = (TextField) fxmlNamespace.get("launchField");
-        launchField.textProperty().bind(properties.launchesProperty().asString("Launches: %d"));
-        getGameScene().addUINode(launchField);
+    protected void initUI() {
+        try {
+            
+            titleScreen = FXMLLoader.load(getClass().getResource("title.fxml"));
+            titleScreen.getStylesheets().add(getClass().getResource("style.css").toString());
+            getGameScene().addUINode(titleScreen);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not load title.fxml", e);
+        }
+    }
+    
+  
+        public static void startGame() {
+        getGameScene().removeUINode(titleScreen);
+        buildCourse();
+        spawnBalls();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    /**
+     * Builds the Easy course.
+     */
+    private static void buildCourse() {
+        spawn("floor");
+       
+        spawnWall(0, 0, 1100, 40);
+        spawnWall(0, 660, 1100, 40);
+        spawnWall(0, 36, 51, 627);
+        spawnWall(1049, 36, 51, 627);
+        
+    
+        spawnWall(430, 212, 670, 257);
+        
+        
+        spawn("goal", 948, 115);
+    }
+    
+    private static void spawnBalls() {
+    int players = GameSetup.getPlayerCount();
+    if (players == 0) {
+        players = 1;
+    }
+
+    for (int i = 0; i < players; i++) {
+        Entity ball = spawn("ball", new SpawnData(955, 520).put("color", GolfFactory.PLAYER_COLORS[i]));
+
+        // for now, control the first player's ball
+        if (i == 0) {
+            ballComponent = ball.getComponent(BallComponent.class);
+        }
+    }
+}
+    
+    
+    /**
+     * Will spawns a wall at the given x,y coordinate and also with the giben size.
+     */
+    private static void spawnWall(double x, double y, double width, double height) {
+        spawn("wall", new SpawnData(x, y)
+                .put("width", width)
+                .put("height", height));
     }
 }

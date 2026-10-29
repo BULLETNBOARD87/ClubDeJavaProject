@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="700.0" prefWidth="1100.0" styleClass="title-root"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.mycompany.clubdejava.TitleController">
+   <children>
+      <VBox alignment="CENTER" spacing="25.0">
+         <children>
+            <Label text="Club De Java" styleClass="game-title" />
+            <Label text="Choose Difficulty" styleClass="section-title" />
+            <HBox alignment="CENTER" spacing="50.0">
+               <children>
+                  <VBox alignment="CENTER" spacing="4.0">
+                     <children>
+                        <Button fx:id="easyButton" prefHeight="55.0" prefWidth="170.0" text="Easy" onAction="#onEasy" styleClass="difficulty-button" id="easy-button" />
+                        <Label fx:id="easySelected" text="selected" styleClass="selected-label" visible="false" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="4.0">
+                     <children>
+                        <Button fx:id="mediumButton" prefHeight="55.0" prefWidth="170.0" text="Medium" onAction="#onMedium" styleClass="difficulty-button" id="medium-button" />
+                        <Label fx:id="mediumSelected" text="selected" styleClass="selected-label" visible="false" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="4.0">
+                     <children>
+                        <Button fx:id="hardButton" prefHeight="55.0" prefWidth="170.0" text="Hard" onAction="#onHard" styleClass="difficulty-button" id="hard-button" />
+                        <Label fx:id="hardSelected" text="selected" styleClass="selected-label" visible="false" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label fx:id="courseInfo" text="Pick a course: Easy, Medium or Hard." styleClass="hint" />
+            <Label text="Choose number of players" styleClass="section-title" />
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <Button fx:id="players1" prefHeight="66.0" prefWidth="66.0" text="1" onAction="#onPlayers" styleClass="player-button" />
+                  <Button fx:id="players2" prefHeight="66.0" prefWidth="66.0" text="2" onAction="#onPlayers" styleClass="player-button" />
+                  <Button fx:id="players3" prefHeight="66.0" prefWidth="66.0" text="3" onAction="#onPlayers" styleClass="player-button" />
+                  <Button fx:id="players4" prefHeight="66.0" prefWidth="66.0" text="4" onAction="#onPlayers" styleClass="player-button" />
+               </children>
+            </HBox>
+            <Label fx:id="playersHint" text="(Choose 1 to 4 players)" styleClass="hint" />
+            <Button fx:id="startButton" prefHeight="60.0" prefWidth="220.0" text="START GAME" onAction="#onStart" styleClass="start-button" />
+            <Label text="How to play: click your ball, drag backwards to aim, release to shoot. Fewest shots wins!" styleClass="hint" />
+         </children>
+      </VBox>
+   </children>
+</StackPane>
