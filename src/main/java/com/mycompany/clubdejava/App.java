@@ -34,8 +34,7 @@ public class App extends GameApplication {
     private static BallComponent ballComponent;
     private boolean dragging = false;
     private final GolfGameProperties properties = new GolfGameProperties();
-    
- 
+
     private static Parent titleScreen;
 
     public static void main(String[] args) {
@@ -108,16 +107,36 @@ public class App extends GameApplication {
     private static void buildCourse() {
         spawn("floor");
         
+        String[] defaultWalls = {
+            "0, 0, 1100, 40",
+            "0, 660, 1100, 40",
+            "0, 36, 51, 627",
+            "1049, 36, 51, 1100",
+        };
+        placeWalls(defaultWalls);
+                
         if (GameSetup.getDifficulty() == Difficulty.EASY) {
             String[] walls = {
-                "0, 0, 1100, 40",
-                "0, 660, 1100, 40",
-                "0, 36, 51, 627",
-                "1049, 36, 51, 1100",
                 "430, 212, 670, 257",   
             };
             placeWalls(walls);
             spawn("goal", 948, 115);
+        } else if (GameSetup.getDifficulty() == Difficulty.MEDIUM) {
+            String [] walls = {
+                "130,173,165,36",   
+                "295,172,57,488",   
+                "147,278,63,117",   
+                "52,465,164,36",   
+                
+                "552,42,57,488",    
+                "455,484,233,45",  
+
+                
+                "701,173,233,45", 
+                "791,218,57,444",
+            };
+            placeWalls(walls);
+            spawn("goal", 69, 601);
         }
        
     }
@@ -155,7 +174,7 @@ public class App extends GameApplication {
     private static void placeWalls(String[] walls) {
         for (String wall : walls) {
                 String[] p = wall.split(",");
-                App.spawnWall(
+                spawnWall(
                     Double.parseDouble(p[0].trim()),
                     Double.parseDouble(p[1].trim()),
                     Double.parseDouble(p[2].trim()),
