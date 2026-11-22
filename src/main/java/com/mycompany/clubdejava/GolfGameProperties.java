@@ -26,8 +26,24 @@ public class GolfGameProperties {
     public IntegerProperty launchesProperty() {
         return launches;
     }
+    
+    public void addStroke(int player) {
+        strokes[player]++;
+    }
+
+    public int getStrokes(int player) {
+        return strokes[player];
+    }
 
     public void reset() {
         launches.set(0);
+        
+        for (int i = 0; i < strokes.length; i++) {
+            strokes[i] = 0;
+        }
     }
+    
+    // AMOUNT OF STROKES DOR EACH PLAYER
+    
+    private final int[] strokes = new int[GameSetup.MAX_PLAYERS];
 }
