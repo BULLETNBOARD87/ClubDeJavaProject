@@ -9,22 +9,17 @@ package com.mycompany.clubdejava;
  * @author antho
  */
 public enum Difficulty {
-    EASY("Easy", "easy.txt",3),
-    MEDIUM("Medium", "medium.txt",10),
-    HARD("Hard", "hard.txt",3);
+    EASY("Easy", "easy.txt"),
+    MEDIUM("Medium", "medium.txt"),
+    HARD("Hard", "hard.txt");
 
     private final String displayName;
     private final String mapFile;
-    private final int par;
 
-    Difficulty(String displayName, String mapFile, int par) {
+    Difficulty(String displayName, String mapFile) {
         this.displayName = displayName;
         this.mapFile = mapFile;
-        this.par = par;
-    }
-    
-    public int getPar() {
-        return par;
+
     }
 
     public String getDisplayName() {
