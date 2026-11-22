@@ -103,7 +103,7 @@ public class App extends GameApplication {
     }
 
     /**
-     * Builds the Easy course.
+     * Builds the courses that the players will play on.
      */
     private static void buildCourse() {
         spawn("floor");
@@ -113,26 +113,13 @@ public class App extends GameApplication {
                 "0, 0, 1100, 40",
                 "0, 660, 1100, 40",
                 "0, 36, 51, 627",
-                "1049, 36, 51, 62",
+                "1049, 36, 51, 1100",
                 "430, 212, 670, 257",   
             };
-            
-            for (String wall : walls) {
-                String[] p = wall.split(",");
-                spawnWall(
-                    Double.parseDouble(p[0].trim()),
-                    Double.parseDouble(p[1].trim()),
-                    Double.parseDouble(p[2].trim()),
-                    Double.parseDouble(p[3].trim())
-                );
-            }
+            placeWalls(walls);
+            spawn("goal", 948, 115);
         }
        
-        spawnWall(0, 0, 1100, 40);
-        
-        
-        
-        spawn("goal", 948, 115);
     }
     
     private static void spawnBalls() {
@@ -159,5 +146,21 @@ public class App extends GameApplication {
         spawn("wall", new SpawnData(x, y)
                 .put("width", width)
                 .put("height", height));
+    }
+    
+    /**
+     * Places walls in a course.
+     * @param walls the coordinates of the walls to place.
+     */
+    private static void placeWalls(String[] walls) {
+        for (String wall : walls) {
+                String[] p = wall.split(",");
+                App.spawnWall(
+                    Double.parseDouble(p[0].trim()),
+                    Double.parseDouble(p[1].trim()),
+                    Double.parseDouble(p[2].trim()),
+                    Double.parseDouble(p[3].trim())
+                );
+            }
     }
 }
