@@ -28,14 +28,16 @@ public class App extends GameApplication {
     public static final int WIDTH = 1100;
     public static final int HEIGHT = 700;
     
+    private static int INITIAL_X = 0;
+    private static int INITIAL_Y = 0;
+    
     private static final double RADIUS = 20;
     private static final double POWER = 4.0;
 
     private static BallComponent ballComponent;
     private boolean dragging = false;
     private final GolfGameProperties properties = new GolfGameProperties();
-    
- 
+
     private static Parent titleScreen;
 
     public static void main(String[] args) {
@@ -99,35 +101,62 @@ public class App extends GameApplication {
         public static void startGame() {
         getGameScene().removeUINode(titleScreen);
         buildCourse();
-        spawnBalls();
     }
 
     /**
-     * Builds the Easy course.
+     * Builds the courses that the players will play on.
      */
     private static void buildCourse() {
         spawn("floor");
+        
+        String[] defaultWalls = {
+            "0, 0, 1100, 40",
+            "0, 660, 1100, 40",
+            "0, 36, 51, 627",
+            "1049, 36, 51, 627",
+        };
+        placeWalls(defaultWalls);
+                
+        if (GameSetup.getDifficulty() == Difficulty.EASY) {
+            INITIAL_X = 955;
+            INITIAL_Y = 520;
+            String[] walls = {
+                "430, 212, 670, 257",   
+            };
+            placeWalls(walls);
+            spawn("goal", 948, 115);
+            spawnBalls(INITIAL_X, INITIAL_Y);
+        } else if (GameSetup.getDifficulty() == Difficulty.MEDIUM) {
+            INITIAL_X = 955;
+            INITIAL_Y = 520;
+            
+            String [] walls = {
+                "130,173,165,36",   
+                "295,172,57,488",   
+                "147,278,63,117",   
+                "52,465,164,36",   
+                
+                "552,42,57,488",    
+                "455,484,233,45",  
+
+                "701,173,233,45", 
+                "791,218,57,444",
+            };
+            placeWalls(walls);
+            spawn("goal", 69, 601);
+            spawnBalls(INITIAL_X, INITIAL_Y);
+        }
        
-        spawnWall(0, 0, 1100, 40);
-        spawnWall(0, 660, 1100, 40);
-        spawnWall(0, 36, 51, 627);
-        spawnWall(1049, 36, 51, 627);
-        
-    
-        spawnWall(430, 212, 670, 257);
-        
-        
-        spawn("goal", 948, 115);
     }
     
-    private static void spawnBalls() {
+    private static void spawnBalls(int initialX, int initialY) {
     int players = GameSetup.getPlayerCount();
     if (players == 0) {
         players = 1;
     }
 
     for (int i = 0; i < players; i++) {
-        Entity ball = spawn("ball", new SpawnData(955, 520).put("color", GolfFactory.PLAYER_COLORS[i]));
+        Entity ball = spawn("ball", new SpawnData(initialX, initialY).put("color", GolfFactory.PLAYER_COLORS[i]));
 
         // for now, control the first player's ball
         if (i == 0) {
@@ -144,5 +173,21 @@ public class App extends GameApplication {
         spawn("wall", new SpawnData(x, y)
                 .put("width", width)
                 .put("height", height));
+    }
+    
+    /**
+     * Places walls in a course.
+     * @param walls the coordinates of the walls to place.
+     */
+    private static void placeWalls(String[] walls) {
+        for (String wall : walls) {
+                String[] p = wall.split(",");
+                spawnWall(
+                    Double.parseDouble(p[0].trim()),
+                    Double.parseDouble(p[1].trim()),
+                    Double.parseDouble(p[2].trim()),
+                    Double.parseDouble(p[3].trim())
+                );
+            }
     }
 }
