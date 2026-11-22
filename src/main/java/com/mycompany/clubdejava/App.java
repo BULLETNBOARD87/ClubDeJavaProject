@@ -113,7 +113,7 @@ public class App extends GameApplication {
             "0, 0, 1100, 40",
             "0, 660, 1100, 40",
             "0, 36, 51, 627",
-            "1049, 36, 51, 1100",
+            "1049, 36, 51, 627",
         };
         placeWalls(defaultWalls);
                 
