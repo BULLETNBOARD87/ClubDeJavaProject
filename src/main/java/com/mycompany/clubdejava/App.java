@@ -107,14 +107,29 @@ public class App extends GameApplication {
      */
     private static void buildCourse() {
         spawn("floor");
+        
+        if (GameSetup.getDifficulty() == Difficulty.EASY) {
+            String[] walls = {
+                "0, 0, 1100, 40",
+                "0, 660, 1100, 40",
+                "0, 36, 51, 627",
+                "1049, 36, 51, 62",
+                "430, 212, 670, 257",   
+            };
+            
+            for (String wall : walls) {
+                String[] p = wall.split(",");
+                spawnWall(
+                    Double.parseDouble(p[0].trim()),
+                    Double.parseDouble(p[1].trim()),
+                    Double.parseDouble(p[2].trim()),
+                    Double.parseDouble(p[3].trim())
+                );
+            }
+        }
        
         spawnWall(0, 0, 1100, 40);
-        spawnWall(0, 660, 1100, 40);
-        spawnWall(0, 36, 51, 627);
-        spawnWall(1049, 36, 51, 627);
         
-    
-        spawnWall(430, 212, 670, 257);
         
         
         spawn("goal", 948, 115);
