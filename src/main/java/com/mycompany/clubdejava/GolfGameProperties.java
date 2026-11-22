@@ -14,6 +14,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class GolfGameProperties {
 
     private final IntegerProperty launches = new SimpleIntegerProperty(0);
+    
+    private final IntegerProperty turn = new SimpleIntegerProperty(1);
 
     public void recordLaunch() {
         launches.set(launches.get() + 1);
@@ -34,9 +36,23 @@ public class GolfGameProperties {
     public int getStrokes(int player) {
         return strokes[player];
     }
+    
+    public void nextTurn() {
+        turn.set(turn.get() + 1);
+    }
+
+    public int getTurn() {
+        return turn.get();
+    }
+
+    public IntegerProperty turnProperty() {
+        return turn;
+    }
 
     public void reset() {
         launches.set(0);
+        
+        turn.set(1);
         
         for (int i = 0; i < strokes.length; i++) {
             strokes[i] = 0;
