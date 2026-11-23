@@ -108,7 +108,14 @@ public class App extends GameApplication {
         
         if (shotInProgress && ballComponent.isStopped()) {
             shotInProgress = false;
+            
+            nextPlayer();
         }
+    }
+    
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % balls.size();
+        ballComponent = balls.get(currentPlayer);
     }
     
     @Override
