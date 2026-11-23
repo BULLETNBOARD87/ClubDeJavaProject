@@ -39,6 +39,10 @@ public class BallComponent extends Component {
     public boolean isStopped() {
         return !physics.isMoving();
     }
+    
+    public double getSpeed() {
+        return physics.getLinearVelocity().magnitude();
+    }
 
     public Point2D getCenter() {
         return entity.getPosition().add(radius, radius);
