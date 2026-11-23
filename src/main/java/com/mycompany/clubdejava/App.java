@@ -103,6 +103,10 @@ public class App extends GameApplication {
                 return;
             }
             
+            if (ballComponent.isSunk()) {
+                return;
+            }
+            
             Point2D mouse = getInput().getMousePositionWorld();
             dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
         });
