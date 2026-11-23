@@ -115,7 +115,14 @@ public class App extends GameApplication {
     
     private void nextPlayer() {
         currentPlayer = (currentPlayer + 1) % balls.size();
+        
+        if (currentPlayer == 0) {
+            properties.nextTurn();
+        }
+        
         ballComponent = balls.get(currentPlayer);
+        
+        showCurrentBallOnTop();
     }
     
     @Override
@@ -198,7 +205,16 @@ public class App extends GameApplication {
     }
     
     ballComponent = balls.get(0);
-}
+    
+    showCurrentBallOnTop();
+    }
+    
+    private static void showCurrentBallOnTop() {
+        for (BallComponent ball : balls) {
+            ball.getEntity().setZIndex(0);
+        }
+        ballComponent.getEntity().setZIndex(1);
+    }
     
     
     /**
