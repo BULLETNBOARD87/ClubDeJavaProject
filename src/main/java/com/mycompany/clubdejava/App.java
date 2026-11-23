@@ -208,6 +208,22 @@ public class App extends GameApplication {
             placeWalls(walls);
             spawn("goal", 69, 601);
             spawnBalls(INITIAL_X, INITIAL_Y);
+        } else if (GameSetup.getDifficulty() == Difficulty.HARD) {
+            INITIAL_X = 110;
+            INITIAL_Y = 90;
+            String[] walls = {
+                "200, 40, 40, 530",
+                "400, 130, 40, 530",
+                "600, 40, 40, 530",
+                "800, 130, 40, 530",
+                "285, 300, 70, 70",
+                "485, 200, 70, 70",
+                "685, 430, 70, 70",
+                "880, 520, 120, 20",
+            };
+            placeWalls(walls);
+            spawn("goal", 940, 580);
+            spawnBalls(INITIAL_X, INITIAL_Y);
         }
        
     }
