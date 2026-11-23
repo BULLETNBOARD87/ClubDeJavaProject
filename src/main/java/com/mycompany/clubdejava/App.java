@@ -36,6 +36,8 @@ public class App extends GameApplication {
 
     private static BallComponent ballComponent;
     private boolean dragging = false;
+    private boolean shotInProgress = false;
+    
     private final GolfGameProperties properties = new GolfGameProperties();
 
     private static Parent titleScreen;
@@ -71,6 +73,12 @@ public class App extends GameApplication {
             if (ballComponent == null) {
                 return;
             }
+            
+            // STOPS SHOOTING WHILE BALL IS ROLLING
+            if (shotInProgress) {
+                return;
+            }
+            
             Point2D mouse = getInput().getMousePositionWorld();
             dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
         });
@@ -82,7 +90,18 @@ public class App extends GameApplication {
             Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
             ballComponent.launch(drag.multiply(-POWER));
             properties.recordLaunch();
+            
+            shotInProgress = true;
         });
+    }
+    
+    @Override
+    protected void onUpdate(double tpf) {
+        // WHEN THE BALL THAT WAS SHOT STOPS ROLLING THE SHOT IS OVER
+        
+        if (shotInProgress && ballComponent.isStopped()) {
+            shotInProgress = false;
+        }
     }
     
     @Override

@@ -35,6 +35,10 @@ public class BallComponent extends Component {
     public void launch(Point2D velocity) {
         physics.setLinearVelocity(velocity);
     }
+    
+    public boolean isStopped() {
+        return !physics.isMoving();
+    }
 
     public Point2D getCenter() {
         return entity.getPosition().add(radius, radius);
