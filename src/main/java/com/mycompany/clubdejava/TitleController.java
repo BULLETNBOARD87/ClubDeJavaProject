@@ -60,11 +60,13 @@ public class TitleController {
     private void onPlayers(ActionEvent event) {
         ButtonBase clicked = (ButtonBase) event.getSource();
         GameSetup.setPlayerCount(Integer.parseInt(clicked.getText()));
-        System.out.println(Integer.parseInt(clicked.getText()));
     }
     
     @FXML
     private void onStart() {
+        if (GameSetup.isReady() == true) {
+           App.startGame(); 
+        }
         App.startGame();
     }
 }

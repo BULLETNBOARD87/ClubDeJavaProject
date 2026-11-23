@@ -28,7 +28,7 @@
                   </VBox>
                   <VBox alignment="CENTER" spacing="4.0">
                      <children>
-                        <ToggleButton id="medium-button" fx:id="mediumButton" onAction="#onMedium" prefHeight="55.0" prefWidth="170.0" styleClass="difficulty-button" text="Normal" toggleGroup="$difficultyGroup" />
+                        <ToggleButton id="medium-button" fx:id="mediumButton" onAction="#onMedium" prefHeight="55.0" prefWidth="170.0" styleClass="difficulty-button" text="Medium" toggleGroup="$difficultyGroup" />
                         <Label fx:id="mediumSelected" styleClass="selected-label" text="selected" visible="false" />
                      </children>
                   </VBox>
