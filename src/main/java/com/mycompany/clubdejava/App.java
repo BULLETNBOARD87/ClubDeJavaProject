@@ -19,6 +19,8 @@ import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 import com.almasb.fxgl.entity.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Club De Java: a turn-based, top-down golf game.
@@ -35,6 +37,9 @@ public class App extends GameApplication {
     private static final double POWER = 4.0;
 
     private static BallComponent ballComponent;
+    private static final List<BallComponent> balls = new ArrayList<>();
+    private static int currentPlayer = 0;
+    
     private boolean dragging = false;
     private boolean shotInProgress = false;
     
@@ -90,6 +95,8 @@ public class App extends GameApplication {
             Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
             ballComponent.launch(drag.multiply(-POWER));
             properties.recordLaunch();
+            
+            properties.addStroke(currentPlayer);
             
             shotInProgress = true;
         });
@@ -173,15 +180,17 @@ public class App extends GameApplication {
     if (players == 0) {
         players = 1;
     }
+    
+    balls.clear();
+    currentPlayer = 0;
 
     for (int i = 0; i < players; i++) {
         Entity ball = spawn("ball", new SpawnData(initialX, initialY).put("color", GolfFactory.PLAYER_COLORS[i]));
 
-        // for now, control the first player's ball
-        if (i == 0) {
-            ballComponent = ball.getComponent(BallComponent.class);
-        }
+        balls.add(ball.getComponent(BallComponent.class));
     }
+    
+    ballComponent = balls.get(0);
 }
     
     
