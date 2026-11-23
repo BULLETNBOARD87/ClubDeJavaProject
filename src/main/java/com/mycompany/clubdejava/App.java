@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.physics.CollisionHandler;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,6 +36,9 @@ public class App extends GameApplication {
     
     private static final double RADIUS = 20;
     private static final double POWER = 4.0;
+    
+    private static final double SINK_DISTANCE = 15;
+    private static final double SINK_SPEED = 300;
 
     private static BallComponent ballComponent;
     private static final List<BallComponent> balls = new ArrayList<>();
@@ -69,6 +73,21 @@ public class App extends GameApplication {
     protected void initPhysics() {
         // the game is seen from the top so we shouldnt need any gravity
         getPhysicsWorld().setGravity(0, 0);
+        
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.BALL, EntityType.GOAL) {
+            @Override
+            protected void onCollision(Entity ball, Entity goal) {
+                BallComponent b = ball.getComponent(BallComponent.class);
+                if (b.isSunk()) {
+                    return;
+                }
+
+                double distance = b.getCenter().distance(goal.getCenter());
+                if (distance <= SINK_DISTANCE && b.getSpeed() < SINK_SPEED) {
+                    b.sink();
+                }
+            }
+        });
     }
 
     @Override
