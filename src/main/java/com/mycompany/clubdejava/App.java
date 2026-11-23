@@ -170,7 +170,6 @@ public class App extends GameApplication {
      * Builds the courses that the players will play on.
      */
     private static void buildCourse() {
-        spawn("floor");
         
         String[] defaultWalls = {
             "0, 0, 1100, 40",
@@ -187,6 +186,7 @@ public class App extends GameApplication {
                 "430, 212, 670, 257",   
             };
             placeWalls(walls);
+            spawnFloor(968, 135, INITIAL_X + 10, INITIAL_Y + 10);
             spawn("goal", 948, 115);
             spawnBalls(INITIAL_X, INITIAL_Y);
         } else if (GameSetup.getDifficulty() == Difficulty.MEDIUM) {
@@ -206,6 +206,7 @@ public class App extends GameApplication {
                 "791,218,57,444",
             };
             placeWalls(walls);
+            spawnFloor(89, 621, INITIAL_X + 10, INITIAL_Y + 10);
             spawn("goal", 69, 601);
             spawnBalls(INITIAL_X, INITIAL_Y);
         } else if (GameSetup.getDifficulty() == Difficulty.HARD) {
@@ -222,10 +223,21 @@ public class App extends GameApplication {
                 "880, 520, 120, 20",
             };
             placeWalls(walls);
+            spawnFloor(960, 600, INITIAL_X + 10, INITIAL_Y + 10);
             spawn("goal", 940, 580);
             spawnBalls(INITIAL_X, INITIAL_Y);
         }
        
+    }
+    
+    // NEW SPAWNFLOOR METHOD FOR GRASS, AREA AROUND HOLE AND TEE WHERE BALL STARTS
+    
+    private static void spawnFloor(double holeX, double holeY, double teeX, double teeY) {
+        spawn("floor", new SpawnData(0, 0)
+                .put("holeX", holeX)
+                .put("holeY", holeY)
+                .put("teeX", teeX)
+                .put("teeY", teeY));
     }
     
     private static void spawnBalls(int initialX, int initialY) {
