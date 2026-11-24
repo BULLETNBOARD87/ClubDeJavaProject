@@ -3,35 +3,39 @@ package com.mycompany.clubdejava;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 
 public class TitleController {
 
     @FXML
-    private Button easyButton;
-    
-    @FXML
-    private Button mediumButton;
-    
-    @FXML
-    private Button hardButton;
+    private ToggleGroup difficultyGroup;
 
     @FXML
-    private Button players1;
-    
+    private ToggleButton easyButton;
+
     @FXML
-    private Button players2;
-    
+    private ToggleButton hardButton;
+
     @FXML
-    private Button players3;
-    
+    private ToggleButton mediumButton;
+
     @FXML
-    private Button players4;
-    
+    private ToggleButton players1;
+
     @FXML
-    private Label playersHint;
-    
+    private ToggleButton players2;
+
+    @FXML
+    private ToggleButton players3;
+
+    @FXML
+    private ToggleButton players4;
+
+    @FXML
+    private ToggleGroup playersGroup;
 
     @FXML
     private Button startButton;
@@ -52,14 +56,16 @@ public class TitleController {
         GameSetup.setDifficulty(Difficulty.HARD);
     }
     
-        @FXML
+    @FXML
     private void onPlayers(ActionEvent event) {
-        Button clicked = (Button) event.getSource();
+        ButtonBase clicked = (ButtonBase) event.getSource();
         GameSetup.setPlayerCount(Integer.parseInt(clicked.getText()));
     }
     
     @FXML
     private void onStart() {
-        App.startGame();
+        if (GameSetup.isReady() == true) {
+           App.startGame(); 
+        }
     }
 }
