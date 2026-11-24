@@ -38,13 +38,18 @@ public class GolfFactory implements EntityFactory {
     @Spawns("floor")
     public Entity newFloor(SpawnData data) {
         
+        double holeX = data.get("holeX");
+        double holeY = data.get("holeY");
+        double teeX = data.get("teeX");
+        double teeY = data.get("teeY");
+
         Rectangle grass = new Rectangle(1100, 700, Color.web("#2fac52"));
-        
-        Circle fairway = new Circle(884, 167, 216, Color.web("#50fc7b"));
-        
-        Circle green = new Circle(957, 128, 39, Color.web("#42e16c"));
-        
-        Circle tee = new Circle(965, 571, 8, Color.web("#f8f8f8"));
+
+        Circle fairway = new Circle(holeX, holeY, 216, Color.web("#50fc7b"));
+
+        Circle green = new Circle(holeX, holeY, 39, Color.web("#42e16c"));
+
+        Circle tee = new Circle(teeX, teeY, 8, Color.web("#f8f8f8"));
 
         return entityBuilder(data)
                 .type(EntityType.FLOOR)
