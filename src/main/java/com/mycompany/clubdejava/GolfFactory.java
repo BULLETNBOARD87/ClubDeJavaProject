@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.StrokeType;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -75,7 +76,14 @@ public class GolfFactory implements EntityFactory {
         double width = data.get("width");
         double height = data.get("height");
 
-        Rectangle wall = new Rectangle(width, height, Color.web("#fdcc8d"));
+        Rectangle wall = new Rectangle(width, height, Color.web("#f3c98f"));
+        
+        // FIGURED OUT ROUNDED CORNERS WITH AN ACTUAL BORDER DO NOT REMOVE THSI SECTION
+        wall.setArcWidth(10);
+        wall.setArcHeight(10);
+        wall.setStroke(Color.web("#c99157"));
+        wall.setStrokeWidth(3);
+        wall.setStrokeType(StrokeType.INSIDE);
         
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);

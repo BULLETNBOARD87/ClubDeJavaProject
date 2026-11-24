@@ -174,8 +174,8 @@ public class App extends GameApplication {
         String[] defaultWalls = {
             "0, 0, 1100, 40",
             "0, 660, 1100, 40",
-            "0, 36, 51, 627",
-            "1049, 36, 51, 627",
+            "0, 40, 51, 620",
+            "1049, 40, 51, 620",
         };
         placeWalls(defaultWalls);
                 
