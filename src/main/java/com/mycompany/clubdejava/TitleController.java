@@ -67,6 +67,5 @@ public class TitleController {
         if (GameSetup.isReady() == true) {
            App.startGame(); 
         }
-        App.startGame();
     }
 }
