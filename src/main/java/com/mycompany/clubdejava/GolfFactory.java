@@ -43,17 +43,28 @@ public class GolfFactory implements EntityFactory {
         double teeX = data.get("teeX");
         double teeY = data.get("teeY");
 
-        Rectangle grass = new Rectangle(1100, 700, Color.web("#2fac52"));
+        Group floor = new Group();
+        floor.getChildren().add(new Rectangle(1100, 700, Color.web("#2e9b4b")));
+
+        // MAKES IT A LITTLE LIKE IRL GOLF WITH THE STRIPED GRASS
+        
+        for (int x = 0; x < 1100; x += 110) {
+            Rectangle stripe = new Rectangle(x, 0, 55, 700);
+            stripe.setFill(Color.web("#34a853"));
+            floor.getChildren().add(stripe);
+        }
 
         Circle fairway = new Circle(holeX, holeY, 216, Color.web("#50fc7b"));
 
         Circle green = new Circle(holeX, holeY, 39, Color.web("#42e16c"));
 
         Circle tee = new Circle(teeX, teeY, 8, Color.web("#f8f8f8"));
+        
+        floor.getChildren().addAll(fairway, green, tee);
 
         return entityBuilder(data)
                 .type(EntityType.FLOOR)
-                .view(new Group(grass, fairway, green, tee))
+                .view(floor)
                 .zIndex(-100)
                 .build();
     }
