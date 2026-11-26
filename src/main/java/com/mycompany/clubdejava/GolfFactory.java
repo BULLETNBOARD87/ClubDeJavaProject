@@ -55,13 +55,19 @@ public class GolfFactory implements EntityFactory {
             floor.getChildren().add(stripe);
         }
 
-        Circle fairway = new Circle(holeX, holeY, 216, Color.web("#50fc7b"));
+        Circle fairway = new Circle(holeX, holeY, 216, Color.web("#4cc46a"));
 
-        Circle green = new Circle(holeX, holeY, 39, Color.web("#42e16c"));
+        Circle green = new Circle(holeX, holeY, 60, Color.web("#6fdc8c"));
+        green.setStroke(Color.web("#3fae5c"));
+        green.setStrokeWidth(3);
 
-        Circle tee = new Circle(teeX, teeY, 8, Color.web("#f8f8f8"));
+        Rectangle teeBox = new Rectangle(teeX - 28, teeY - 20, 56, 40);
+        teeBox.setArcWidth(12);
+        teeBox.setArcHeight(12);
+        teeBox.setFill(Color.web("#6fdc8c"));
+        Circle tee = new Circle(teeX, teeY, 5, Color.web("#f8f8f8"));
         
-        floor.getChildren().addAll(fairway, green, tee);
+        floor.getChildren().addAll(fairway, green, teeBox, tee);
 
         return entityBuilder(data)
                 .type(EntityType.FLOOR)
@@ -101,11 +107,13 @@ public class GolfFactory implements EntityFactory {
      
     @Spawns("goal")
     public Entity newGoal(SpawnData data) {
-        Circle hole = new Circle(20, 20, 20, Color.BLACK);
+        Circle hole = new Circle(20, 20, 20, Color.web("#1a1a1a"));
+        hole.setStroke(Color.web("#e8e8e8"));
+        hole.setStrokeWidth(3);
 
         // flag pole going up from the hole, with a red flag at the top
         Line pole = new Line(20, 20, 20, -40);
-        pole.setStroke(Color.DIMGRAY);
+        pole.setStroke(Color.WHITE);
         pole.setStrokeWidth(3);
         Polygon flag = new Polygon(20, -40, 55, -30, 20, -20);
         flag.setFill(Color.RED);
