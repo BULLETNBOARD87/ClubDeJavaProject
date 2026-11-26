@@ -15,6 +15,8 @@ public class GolfGameProperties {
 
     private final IntegerProperty launches = new SimpleIntegerProperty(0);
     private final IntegerProperty par = new SimpleIntegerProperty(0);
+    
+    private final IntegerProperty turn = new SimpleIntegerProperty(1);
 
     
     public void recordLaunch() {
@@ -41,9 +43,35 @@ public class GolfGameProperties {
     public IntegerProperty launchesProperty() {
         return launches;
     }
+    
+    public void addStroke(int player) {
+        strokes[player]++;
+    }
+
+    public int getStrokes(int player) {
+        return strokes[player];
+    }
+    
+    public void nextTurn() {
+        turn.set(turn.get() + 1);
+    }
+
+    public int getTurn() {
+        return turn.get();
+    }
+
+    public IntegerProperty turnProperty() {
+        return turn;
+    }
 
     public void reset() {
         launches.set(0);
+        
+        turn.set(1);
+        
+        for (int i = 0; i < strokes.length; i++) {
+            strokes[i] = 0;
+        }
     }
     
     public String getScoreName() {
@@ -72,4 +100,7 @@ public class GolfGameProperties {
         }
         return "+" + diff;
     }
+    // AMOUNT OF STROKES DOR EACH PLAYER
+    
+    private final int[] strokes = new int[GameSetup.MAX_PLAYERS];
 }

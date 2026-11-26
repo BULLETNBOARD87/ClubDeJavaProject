@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.StrokeType;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -38,17 +39,39 @@ public class GolfFactory implements EntityFactory {
     @Spawns("floor")
     public Entity newFloor(SpawnData data) {
         
-        Rectangle grass = new Rectangle(1100, 700, Color.web("#2fac52"));
+        double holeX = data.get("holeX");
+        double holeY = data.get("holeY");
+        double teeX = data.get("teeX");
+        double teeY = data.get("teeY");
+
+        Group floor = new Group();
+        floor.getChildren().add(new Rectangle(1100, 700, Color.web("#2e9b4b")));
+
+        // MAKES IT A LITTLE LIKE IRL GOLF WITH THE STRIPED GRASS
         
-        Circle fairway = new Circle(884, 167, 216, Color.web("#50fc7b"));
+        for (int x = 0; x < 1100; x += 110) {
+            Rectangle stripe = new Rectangle(x, 0, 55, 700);
+            stripe.setFill(Color.web("#34a853"));
+            floor.getChildren().add(stripe);
+        }
+
+        Circle fairway = new Circle(holeX, holeY, 216, Color.web("#4cc46a"));
+
+        Circle green = new Circle(holeX, holeY, 60, Color.web("#6fdc8c"));
+        green.setStroke(Color.web("#3fae5c"));
+        green.setStrokeWidth(3);
+
+        Rectangle teeBox = new Rectangle(teeX - 28, teeY - 20, 56, 40);
+        teeBox.setArcWidth(12);
+        teeBox.setArcHeight(12);
+        teeBox.setFill(Color.web("#6fdc8c"));
+        Circle tee = new Circle(teeX, teeY, 5, Color.web("#f8f8f8"));
         
-        Circle green = new Circle(957, 128, 39, Color.web("#42e16c"));
-        
-        Circle tee = new Circle(965, 571, 8, Color.web("#f8f8f8"));
+        floor.getChildren().addAll(fairway, green, teeBox, tee);
 
         return entityBuilder(data)
                 .type(EntityType.FLOOR)
-                .view(new Group(grass, fairway, green, tee))
+                .view(floor)
                 .zIndex(-100)
                 .build();
     }
@@ -59,7 +82,14 @@ public class GolfFactory implements EntityFactory {
         double width = data.get("width");
         double height = data.get("height");
 
-        Rectangle wall = new Rectangle(width, height, Color.web("#fdcc8d"));
+        Rectangle wall = new Rectangle(width, height, Color.web("#f3c98f"));
+        
+        // FIGURED OUT ROUNDED CORNERS WITH AN ACTUAL BORDER DO NOT REMOVE THSI SECTION
+        wall.setArcWidth(10);
+        wall.setArcHeight(10);
+        wall.setStroke(Color.web("#c99157"));
+        wall.setStrokeWidth(3);
+        wall.setStrokeType(StrokeType.INSIDE);
         
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
@@ -77,11 +107,13 @@ public class GolfFactory implements EntityFactory {
      
     @Spawns("goal")
     public Entity newGoal(SpawnData data) {
-        Circle hole = new Circle(20, 20, 20, Color.BLACK);
+        Circle hole = new Circle(20, 20, 20, Color.web("#1a1a1a"));
+        hole.setStroke(Color.web("#e8e8e8"));
+        hole.setStrokeWidth(3);
 
         // flag pole going up from the hole, with a red flag at the top
         Line pole = new Line(20, 20, 20, -40);
-        pole.setStroke(Color.DIMGRAY);
+        pole.setStroke(Color.WHITE);
         pole.setStrokeWidth(3);
         Polygon flag = new Polygon(20, -40, 55, -30, 20, -20);
         flag.setFill(Color.RED);

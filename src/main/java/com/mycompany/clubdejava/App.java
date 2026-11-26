@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.physics.CollisionHandler;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +20,8 @@ import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 import com.almasb.fxgl.entity.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Club De Java: a turn-based, top-down golf game.
@@ -33,9 +36,17 @@ public class App extends GameApplication {
     
     private static final double RADIUS = 20;
     private static final double POWER = 4.0;
+    
+    private static final double SINK_DISTANCE = 15;
+    private static final double SINK_SPEED = 300;
 
     private static BallComponent ballComponent;
+    private static final List<BallComponent> balls = new ArrayList<>();
+    private static int currentPlayer = 0;
+    
     private boolean dragging = false;
+    private boolean shotInProgress = false;
+    
     private final GolfGameProperties properties = new GolfGameProperties();
 
     private static Parent titleScreen;
@@ -62,6 +73,21 @@ public class App extends GameApplication {
     protected void initPhysics() {
         // the game is seen from the top so we shouldnt need any gravity
         getPhysicsWorld().setGravity(0, 0);
+        
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.BALL, EntityType.GOAL) {
+            @Override
+            protected void onCollision(Entity ball, Entity goal) {
+                BallComponent b = ball.getComponent(BallComponent.class);
+                if (b.isSunk()) {
+                    return;
+                }
+
+                double distance = b.getCenter().distance(goal.getCenter());
+                if (distance <= SINK_DISTANCE && b.getSpeed() < SINK_SPEED) {
+                    b.sink();
+                }
+            }
+        });
     }
 
     @Override
@@ -71,6 +97,16 @@ public class App extends GameApplication {
             if (ballComponent == null) {
                 return;
             }
+            
+            // STOPS SHOOTING WHILE BALL IS ROLLING
+            if (shotInProgress) {
+                return;
+            }
+            
+            if (ballComponent.isSunk()) {
+                return;
+            }
+            
             Point2D mouse = getInput().getMousePositionWorld();
             dragging = ballComponent.getCenter().distance(mouse) <= RADIUS;
         });
@@ -82,7 +118,34 @@ public class App extends GameApplication {
             Point2D drag = getInput().getMousePositionWorld().subtract(ballComponent.getCenter());
             ballComponent.launch(drag.multiply(-POWER));
             properties.recordLaunch();
+            
+            properties.addStroke(currentPlayer);
+            
+            shotInProgress = true;
         });
+    }
+    
+    @Override
+    protected void onUpdate(double tpf) {
+        // WHEN THE BALL THAT WAS SHOT STOPS ROLLING THE SHOT IS OVER
+        
+        if (shotInProgress && ballComponent.isStopped()) {
+            shotInProgress = false;
+            
+            nextPlayer();
+        }
+    }
+    
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % balls.size();
+        
+        if (currentPlayer == 0) {
+            properties.nextTurn();
+        }
+        
+        ballComponent = balls.get(currentPlayer);
+        
+        showCurrentBallOnTop();
     }
     
     @Override
@@ -107,13 +170,12 @@ public class App extends GameApplication {
      * Builds the courses that the players will play on.
      */
     private static void buildCourse() {
-        spawn("floor");
         
         String[] defaultWalls = {
             "0, 0, 1100, 40",
             "0, 660, 1100, 40",
-            "0, 36, 51, 627",
-            "1049, 36, 51, 627",
+            "0, 40, 51, 620",
+            "1049, 40, 51, 620",
         };
         placeWalls(defaultWalls);
                 
@@ -124,6 +186,7 @@ public class App extends GameApplication {
                 "430, 212, 670, 257",   
             };
             placeWalls(walls);
+            spawnFloor(968, 135, INITIAL_X + 10, INITIAL_Y + 10);
             spawn("goal", 948, 115);
             spawnBalls(INITIAL_X, INITIAL_Y);
         } else if (GameSetup.getDifficulty() == Difficulty.MEDIUM) {
@@ -143,10 +206,38 @@ public class App extends GameApplication {
                 "791,218,57,444",
             };
             placeWalls(walls);
+            spawnFloor(89, 621, INITIAL_X + 10, INITIAL_Y + 10);
             spawn("goal", 69, 601);
+            spawnBalls(INITIAL_X, INITIAL_Y);
+        } else if (GameSetup.getDifficulty() == Difficulty.HARD) {
+            INITIAL_X = 110;
+            INITIAL_Y = 90;
+            String[] walls = {
+                "200, 40, 40, 530",
+                "400, 130, 40, 530",
+                "600, 40, 40, 530",
+                "800, 130, 40, 530",
+                "285, 300, 70, 70",
+                "485, 200, 70, 70",
+                "685, 430, 70, 70",
+                "880, 520, 120, 20",
+            };
+            placeWalls(walls);
+            spawnFloor(960, 600, INITIAL_X + 10, INITIAL_Y + 10);
+            spawn("goal", 940, 580);
             spawnBalls(INITIAL_X, INITIAL_Y);
         }
        
+    }
+    
+    // NEW SPAWNFLOOR METHOD FOR GRASS, AREA AROUND HOLE AND TEE WHERE BALL STARTS
+    
+    private static void spawnFloor(double holeX, double holeY, double teeX, double teeY) {
+        spawn("floor", new SpawnData(0, 0)
+                .put("holeX", holeX)
+                .put("holeY", holeY)
+                .put("teeX", teeX)
+                .put("teeY", teeY));
     }
     
     private static void spawnBalls(int initialX, int initialY) {
@@ -154,16 +245,27 @@ public class App extends GameApplication {
     if (players == 0) {
         players = 1;
     }
+    
+    balls.clear();
+    currentPlayer = 0;
 
     for (int i = 0; i < players; i++) {
         Entity ball = spawn("ball", new SpawnData(initialX, initialY).put("color", GolfFactory.PLAYER_COLORS[i]));
 
-        // for now, control the first player's ball
-        if (i == 0) {
-            ballComponent = ball.getComponent(BallComponent.class);
-        }
+        balls.add(ball.getComponent(BallComponent.class));
     }
-}
+    
+    ballComponent = balls.get(0);
+    
+    showCurrentBallOnTop();
+    }
+    
+    private static void showCurrentBallOnTop() {
+        for (BallComponent ball : balls) {
+            ball.getEntity().setZIndex(0);
+        }
+        ballComponent.getEntity().setZIndex(1);
+    }
     
     
     /**

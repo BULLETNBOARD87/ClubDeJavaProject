@@ -19,6 +19,8 @@ public class BallComponent extends Component {
 
     private static final float DAMPING = 1.5f;   
     private static final double STOP_SPEED = 5.0;
+    
+    private boolean sunk = false;
 
     public BallComponent(double radius) {
         this.radius = radius;
@@ -34,6 +36,24 @@ public class BallComponent extends Component {
 
     public void launch(Point2D velocity) {
         physics.setLinearVelocity(velocity);
+    }
+    
+    public boolean isStopped() {
+        return !physics.isMoving();
+    }
+    
+    public double getSpeed() {
+        return physics.getLinearVelocity().magnitude();
+    }
+    
+    public void sink() {
+        sunk = true;
+        physics.setLinearVelocity(Point2D.ZERO);
+        entity.getViewComponent().setVisible(false);
+    }
+
+    public boolean isSunk() {
+        return sunk;
     }
 
     public Point2D getCenter() {
