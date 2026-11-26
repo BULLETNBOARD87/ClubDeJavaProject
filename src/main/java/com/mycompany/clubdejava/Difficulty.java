@@ -19,6 +19,7 @@ public enum Difficulty {
     Difficulty(String displayName, String mapFile) {
         this.displayName = displayName;
         this.mapFile = mapFile;
+
     }
 
     public String getDisplayName() {

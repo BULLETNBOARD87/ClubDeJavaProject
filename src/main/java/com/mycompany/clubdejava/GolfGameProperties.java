@@ -17,6 +17,7 @@ public class GolfGameProperties {
     
     private final IntegerProperty turn = new SimpleIntegerProperty(1);
 
+    
     public void recordLaunch() {
         launches.set(launches.get() + 1);
     }
@@ -24,7 +25,7 @@ public class GolfGameProperties {
     public int getLaunches() {
         return launches.get();
     }
-
+    
     public IntegerProperty launchesProperty() {
         return launches;
     }

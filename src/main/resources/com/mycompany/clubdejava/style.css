@@ -70,8 +70,25 @@
     -fx-background-color: #c62828;
 }
 
+#easy-button:pressed, #easy-button:selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
 
+#medium-button:pressed, #medium-button:selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
 
+#hard-button:pressed, #hard-button:selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
+
+.player-button:selected, .player-button:selected {
+    -fx-border-color: gold;
+    -fx-border-width: 4;
+}
 
 .selected {
     -fx-border-color: gold;
