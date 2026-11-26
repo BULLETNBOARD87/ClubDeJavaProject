@@ -14,10 +14,24 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class GolfGameProperties {
 
     private final IntegerProperty launches = new SimpleIntegerProperty(0);
+    private final IntegerProperty par = new SimpleIntegerProperty(0);
 
     
     public void recordLaunch() {
         launches.set(launches.get() + 1);
+    }
+    
+    public void startCourse(int coursePar) {
+        launches.set(0);
+        par.set(coursePar);
+    }
+    
+    public int getPar() {
+        return par.get();
+    }
+
+    public IntegerProperty parProperty() {
+        return par;
     }
 
     public int getLaunches() {
@@ -30,5 +44,32 @@ public class GolfGameProperties {
 
     public void reset() {
         launches.set(0);
+    }
+    
+    public String getScoreName() {
+        int strokes = launches.get();
+        if (strokes == 1) return "Hole in one";
+
+        int diff = strokes - par.get();
+
+        if (diff <= -3) { 
+            return "Albatross";
+        }
+        if (diff == -2) {
+            return "Eagle";
+        }
+        if (diff == -1) {
+            return "Birdie";
+        }
+        if (diff == 0)  {
+            return "Par";
+        }
+        if (diff == 1)  {
+            return "Bogey";
+        }
+        if (diff == 2)  {
+            return "Double bogey";
+        }
+        return "+" + diff;
     }
 }
